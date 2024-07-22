@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary border-bottom border-body" data-bs-theme="dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <router-link v-if="isAuth" to="/" class="navbar-brand" href="#">Navbar</router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -13,7 +13,7 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/about">About</router-link>
             </li>
-            <div v-if="this.signedIn" class="d-flex">
+            <div v-if="isAuth" class="d-flex">
               <li class="nav-item">
                 <router-link class="nav-link" to="/posts">Posts</router-link>
               </li>
@@ -21,7 +21,7 @@
                 <button type="button" @click.prevent="signout" class="nav-link" to="/signout">SignOut</button>
               </li>
             </div>
-            <div class="d-flex" v-else>
+            <div class="d-flex" v-if="!isAuth">
               <li class="nav-item">
                 <router-link class="nav-link" to="/signin">SignIn</router-link>
               </li>
@@ -42,20 +42,22 @@
     <router-view/>
 </template>
 
-<!-- <script>
-import axios form 'axios'
-export default {
 
-    methods: {
-      signout () {
-        axios.delete(`http://localhost:3000/api/artists/${artist.id}`)
-      }
-    }
-  }
-</script> -->
 <script>
 import axios from 'axios'
 export default {
+  name: "Header",
+  props: {
+    isAuth: {
+      type: Boolean,
+      required: true
+    },
+    currentUser: {
+      type: Object,
+      require: false,
+      defaultd: () => ({})
+    }
+  },
   data(){
     return {
       signedIn: false
@@ -64,9 +66,7 @@ export default {
   },
   methods: {
       signout () {
-        if(localStorage.getItem('token') == null){
-          
-        }else {
+        if(localStorage.getItem('token') != null){
           axios.delete('http://localhost:3000/logout', {
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token') 
@@ -79,28 +79,10 @@ export default {
             this.$router.push('/signin')
           }).catch(error=>{console.log(error)} )
         }
+        this.$emit('signout')
       },
-      isSignedIn() {
-            if(localStorage.getItem('token') == null){
-              // console.log(this.signedIn)
-              this.signedIn = false
-              this.$router.push({name: 'home'})
-              console.log(this.signedIn)
-              
-            }
-            else{
-              this.signedIn = true
-              //localStorage.setItem('token','eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNTc2YzYyMy1kNjc4LTQ3OTEtOTRkOS0xNzk5ZGQyMDE5ZDEiLCJzdWIiOiIxIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNzIxNjEzNjI1LCJleHAiOjE3MjE3MDAwMjV9.egCo5X4Ls25Glusoy2hDm76t_7KE2IAGbMyfDuoIvB0')
-              this.$router.push({name: 'signin'})
-              console.log(this.signedIn)
-              
-            }
-        }
 
-    },created(){
-        this.isSignedIn()
-    },updated(){
-        this.isSignedIn()
+
     }
 }
 </script>
