@@ -18,7 +18,7 @@
                 <router-link class="nav-link" to="/posts">Posts</router-link>
               </li>
               <li class="nav-item">
-                <button type="button" @click.prevent="signout()" class="nav-link" to="/signout">SignOut</button>
+                <button type="button" @click.prevent="signout" class="nav-link" to="/signout">SignOut</button>
               </li>
             </div>
             <div class="d-flex" v-else>
@@ -90,7 +90,8 @@ export default {
             }
             else{
               this.signedIn = true
-              this.$router.push({name: 'home'})
+              //localStorage.setItem('token','eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNTc2YzYyMy1kNjc4LTQ3OTEtOTRkOS0xNzk5ZGQyMDE5ZDEiLCJzdWIiOiIxIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNzIxNjEzNjI1LCJleHAiOjE3MjE3MDAwMjV9.egCo5X4Ls25Glusoy2hDm76t_7KE2IAGbMyfDuoIvB0')
+              this.$router.push({name: 'signin'})
               console.log(this.signedIn)
               
             }

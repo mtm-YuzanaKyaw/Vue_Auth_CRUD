@@ -4,6 +4,8 @@ import AboutView from '../views/AboutView.vue'
 import Signin from '@/views/Signin.vue'
 import Signup from '@/views/Signup.vue'
 import Posts from '@/views/Posts/Posts.vue' 
+import PostEdit from '@/views/Posts/PostEdit.vue'
+import PostShow from '@/views/Posts/PostShow.vue'
 
 const routes = [
   {
@@ -27,6 +29,14 @@ const routes = [
     path: '/posts',
     name: 'posts',
     component: Posts
+  },{
+    path: '/posts/:id',
+    name: 'postEdit',
+    component: PostEdit
+  },{
+    path: '/posts/:id',
+    name: 'postShow',
+    component: PostShow
   }
 ]
 
